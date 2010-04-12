@@ -39,3 +39,67 @@ nil-conditions is empty, it is replaced by t."
 		  :test (function typep)))
 	   nil
 	   (error condition)))))
+
+(defmacro fn (&body body)
+  "Macro for defining closures.  Usage:
+    (fn form) => (lambda () form)
+    (fn arg ...) => (lambda (arg) ...)
+    (fn (arg+) ...) => (lambda (arg+) ...)"
+  (cond
+    ((not (cdr body))
+     `(lambda () ,@body))
+    (body
+     (let ((args (car body)))
+       `(lambda ,(mklist args)
+          ,@body)))
+    (t (error "Missing body."))))
+
+(defmacro defp (variables values-form)
+  "Like defparameter, but accepting lists (a b c) and multiple
+values (:values a b c).  NIL's are not saved."
+  (flet ((defparameter-expansion (vars vals)
+             (mapcar (lambda (var val) 
+                       (if var
+                           `(defparameter ,var ,val)
+                           nil))
+                     vars vals)))
+    (cond
+      ((atom variables)
+       `(defparameter ,variables ,values-form))
+      ((eq (car variables) :values)
+       (let* ((variables (cdr variables))
+              (temporary-variables (mapcar #'gensym* variables)))
+         (assert (every #'symbolp variables))
+         `(multiple-value-bind ,temporary-variables ,values-form
+            ,@(defparameter-expansion variables temporary-variables))))
+      (t 
+       (let ((temporary-variables (mapcar #'gensym* variables)))
+         (assert (every #'symbolp variables))
+         `(destructuring-bind ,temporary-variables ,values-form
+            ,@(defparameter-expansion variables temporary-variables)))))))
+
+(defmacro setf-template (template &body index-value-pairs)
+  "For each INDEX and VALUE, replace _ in form with INDEX and assign
+VALUE to that form using SETF.  Example:
+ (setf-at-indexes (aref array _)
+                  1 'a
+                  3 'b)"
+  `(setf ,@(iter
+             (for (index value) :on index-value-pairs
+                  :by #'strict-cddr)
+             (collect (subst index '_ template))
+             (collect value))))
+
+(defmacro define-with-multiple-bindings (macro)
+  "Define a version of `macro' with multiple arguments, given as a
+list.  Application of `macro' will be nested.  The new name is the 
+plural of the old one (generated using format)."
+  (let ((plural (intern (format nil "~aS" macro))))
+    `(defmacro ,plural (bindings &body body)
+       ,(format nil "Multiple binding version of ~(~a~)." macro)
+       (if bindings
+	   `(,',macro ,(car bindings)
+		     (,',plural ,(cdr bindings)
+			       ,@body))
+	   `(progn ,@body)))))
+

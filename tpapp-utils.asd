@@ -11,24 +11,15 @@
     :components
     ((:file "package")))
    (:module
-    "macros"
+    "main"
     :pathname #P "src/"
     :serial t
     :components
-    ((:file "symbols")
-     (:file "macros")))
-   (:module
-    "sequences"
-    :pathname #P "src/"
-    :serial t
-    :components
-    ((:file "lists")))
-   (:module
-    "clos"
-    :pathname #P "src/"
-    :serial t
-    :components
-    ((:file "clos")))
+    ((:file "lists")
+     (:file "symbols")
+     (:file "macros")
+     (:file "clos")
+     (:file "misc")))
    ;;  (:file "statistics")
    )
   :depends-on (:metabang-bind :iterate :cl-utilities :anaphora))

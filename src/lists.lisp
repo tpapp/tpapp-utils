@@ -29,3 +29,28 @@ as duplicates, even when there is many of them."
               unless list
               do (error "~A could not be broken up to sublists of ~A elements" orig-list n)
               collect (pop list))))
+
+(defun all-equal? (test list)
+  "Return non-nil IFF all items in LIST are equal to the first, using
+TEST for comparison.  Empty and one-elements lists always result in
+T."
+  (unless list
+    (return-from all-equal? t))
+  (bind (((first &rest rest) list))
+    (iter
+      (for item :in rest)
+      (always (funcall test first item)))))
+
+(defun listn (n &rest items)
+  "Return a list containing N of ITEMS."
+  (iter
+    (repeat n)
+    (dolist (item items)
+      (collecting item))))
+
+(defun strict-cddr (list)
+  "Return cddr if cdr exists, signal an error otherwise.  Used for
+traversing a flat list of pairs."
+  (aif (cdr list)
+       (cdr it)
+       (error "list ~A has a single element" list)))
