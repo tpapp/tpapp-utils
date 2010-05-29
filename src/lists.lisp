@@ -2,11 +2,13 @@
 
 (in-package #:tpapp-utils)
 
-(defun mklist (atom-or-list)
-  "If argument is not already a list, put it in one."
-  (if (atom atom-or-list)
-      (list atom-or-list)
-      atom-or-list))
+(defun mklist (atom-or-list &optional list-from-nil?)
+  "If argument is not already a list, put it in one.  LIST-FROM-NIL
+determines what happens to NIL."
+  (typecase atom-or-list
+    (null (if list-from-nil? (list nil) nil))
+    (atom (list atom-or-list))
+    (otherwise atom-or-list)))
 
 (defun has-duplicates? (list &key (key #'identity) (test #'eql))
   "Look for duplicate elements in a list using KEY and TEST.  Return
