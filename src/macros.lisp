@@ -51,7 +51,7 @@ nil-conditions is empty, it is replaced by t."
     (body
      (let ((args (car body)))
        `(lambda ,(mklist args)
-          ,@body)))
+          ,@(cdr body))))
     (t (error "Missing body."))))
 
 (defmacro defp (variables values-form)
