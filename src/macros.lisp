@@ -102,4 +102,3 @@ plural of the old one (generated using format)."
 		     (,',plural ,(cdr bindings)
 			       ,@body))
 	   `(progn ,@body)))))
-
