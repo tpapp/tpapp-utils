@@ -1,5 +1,5 @@
 (defpackage :tpapp-utils
-    (:use :common-lisp :bind :iterate :anaphora)
+    (:use :common-lisp :bind :iterate :anaphora :alexandria)
   (:export 
 
    ;; symbols
@@ -22,7 +22,7 @@
 
    ;; misc
    
-   silent
+   silent check-types
 
    ))
 

@@ -30,5 +30,5 @@
      (:file "misc")))
    ;;  (:file "statistics")
    )
-  :depends-on (:metabang-bind :iterate :cl-utilities :anaphora))
+  :depends-on (:metabang-bind :iterate :alexandria :anaphora))
 
