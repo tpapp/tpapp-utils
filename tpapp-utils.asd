@@ -6,7 +6,7 @@
 ;;;
 ;;; This copyright notice pertains to all files in this library.
 
-(defsystem tpapp-utils
+(asdf:defsystem tpapp-utils
   :description "Miscellaneous utility functions/macros I use frequently"
   :version "0.1"
   :author "Tamas K Papp"
