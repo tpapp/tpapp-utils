@@ -22,7 +22,7 @@ as duplicates, even when there is many of them."
             (push key unique-keys)))))
   nil)
 
-(defun group (list n &aux (orig-list list))
+(defun group-list (list n &aux (orig-list list))
   "Return elements of LIST as a list of lists in groups of N."
   ;; Thanks to Rainer Joswig on comp.lang.lisp for this version
   (check-type n (integer 1))

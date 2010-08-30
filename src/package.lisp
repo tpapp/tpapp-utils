@@ -9,12 +9,12 @@
    
    ;; lists
 
-   mklist has-duplicates? group all-equal? listn strict-cddr
+   mklist has-duplicates? group-list all-equal? listn strict-cddr
 
    ;; macros
 
    with-parametrized-formulas nil-on-errors fn defp setf-template _
-   define-with-multiple-bindings
+   define-with-multiple-bindings use-locally
 
    ;; clos
 
