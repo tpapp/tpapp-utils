@@ -102,3 +102,23 @@ plural of the old one (generated using format)."
 		     (,',plural ,(cdr bindings)
 			       ,@body))
 	   `(progn ,@body)))))
+
+(defmacro use-locally (package-symbols-list &body body)
+  "Example: (use-locally ((package1 symbol1 ...)
+                          (package2 ...))
+              body)
+
+Replace the given symbols with ones in the corresponding packages."
+  `(progn
+     ,@(sublis (iter
+               (for (package . symbols) :in package-symbols-list)
+               (dolist (symbol symbols)
+                 (collecting
+                   (let ((name (symbol-name symbol)))
+                     (cons symbol
+                           (aif (find-symbol name package)
+                                it
+                                (error "Could not find ~A in package ~A"
+                                       name package)))))))
+               body :test #'eq)))
+
