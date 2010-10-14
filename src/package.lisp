@@ -1,5 +1,7 @@
 (defpackage :tpapp-utils
     (:use :common-lisp :bind :iterate :anaphora :alexandria)
+    ;; Alexandria exports its own MAKE-KEYWORD.
+    (:shadow #:make-keyword)
   (:export 
 
    ;; symbols
