@@ -15,7 +15,7 @@
   and intern it (in *PACKAGE*, INTERN's default)."
   (apply #'make-symbol-in *package* args))
 
-(defun make-keyword (&rest args)
+(defun make-keyword* (&rest args)
   "Build a symbol by concatenating each element of ARGS as strings,
   and intern it the KEYWORD package."
   (apply #'make-symbol-in (load-time-value (find-package :keyword)) args))
