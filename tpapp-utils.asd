@@ -23,7 +23,8 @@
     :pathname #P "src/"
     :serial t
     :components
-    ((:file "lists")
+    ((:file "DEPRECATED")
+     (:file "lists")
      (:file "symbols")
      (:file "macros")
      (:file "clos")
